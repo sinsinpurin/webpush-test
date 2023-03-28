@@ -1,12 +1,12 @@
 {
-    "name": "Identity Wallet",
-    "short_name": "ID Wallet",
+    "name": "web push test",
+    "short_name": "web push test",
     "version": "0.0.1",
     "display": "standalone",
     "start_url": "/",
     "background_color": "#fff",
     "theme_color": "#fff",
-    "description": "This is identity wallet.",
+    "description": "This is web push test.",
     "icons": [
         {
             "src": "icons/16.png",
