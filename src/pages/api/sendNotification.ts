@@ -1,4 +1,5 @@
 // pages/api/sendNotification.js
+import { getSubscriptions } from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import webpush from "web-push";
 
@@ -6,9 +7,6 @@ const publicKey = process.env.VAPID_PUBLIC_KEY as string;
 const privateKey = process.env.VAPID_PRIVATE_KEY as string;
 
 webpush.setVapidDetails("mailto:example@example.com", publicKey, privateKey);
-
-// これは実際のアプリケーションではデータベースなどに保存されますが、この例ではメモリ内に保持しています
-const subscriptions = new Set();
 
 export default async function handler(
     req: NextApiRequest,
@@ -34,11 +32,13 @@ export default async function handler(
             },
         };
 
-        subscriptions.forEach((subscriptionStr) => {
-            const subscription = JSON.parse(subscriptionStr as string);
+        const subscriptions = await getSubscriptions();
+
+        subscriptions?.map((subscription) => {
+            console.log(subscription.subscribe_data);
             webpush
                 .sendNotification(
-                    subscription,
+                    subscription.subscribe_data,
                     JSON.stringify(notificationPayload),
                 )
                 .catch((err) =>

@@ -1,7 +1,7 @@
 // pages/api/unsubscribe.js
 import { NextApiRequest, NextApiResponse } from "next";
 
-const subscriptions = new Set();
+import { deleteSubscription } from "@/lib/db";
 
 export default async function handler(
     req: NextApiRequest,
@@ -9,7 +9,7 @@ export default async function handler(
 ) {
     if (req.method === "DELETE") {
         const subscription = req.body;
-        subscriptions.delete(JSON.stringify(subscription));
+        await deleteSubscription(subscription);
         res.status(200).json({ message: "Unsubscribed successfully." });
     } else {
         res.status(405).json({ message: "Method not allowed." });
